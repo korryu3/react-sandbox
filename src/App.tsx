@@ -3,13 +3,15 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 import { CounterApp } from 'components/CounterApp'
+import { FruitSaladCard } from 'components/FruitSaladCard'
+import '@/index.css'
 
 
 function App() {
   return (
-    <>
-      <CounterApp />
-    </>
+    <div className="flex justify-center items-center min-h-screen bg-[#f1f1f1]">
+      <FruitSaladCard />
+    </div>
   );
 }
 
