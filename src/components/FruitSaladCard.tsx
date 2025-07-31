@@ -27,8 +27,8 @@ const Timer: FC<{ time: string }> = ({ time }) => (
 )
 
 const ListItem: FC<ListItemProps> = ({ text }) => (
-    <li>
-        <span className="text-sm leading-5 pr-2">●</span>
+    <li className='flex items-start gap-2'>
+        <span className="text-lg">●</span>
         <span className="text-lg">{text}</span>
     </li>
 );
@@ -63,7 +63,7 @@ const IngredientsSection: FC = () => {
     );
 }
 
-const ActionButton: FC = () => <button className="bg-[#43B562] text-white rounded-lg text-2xl p-4 font-bold hover:bg-[#36a149]">レシピを見る</button>;
+const ActionButton: FC = () => <button className="w-full bg-[#43B562] text-white rounded-lg text-2xl p-4 font-bold hover:bg-[#36a149]">レシピを見る</button>;
 
 const CardLayout: FC = () => (
     <article className="p-8 flex flex-col gap-8 bg-white rounded-br-3xl rounded-bl-3xl shadow-lg">
