@@ -1,12 +1,24 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 import './App.css'
+
+interface SquareProps {
+  value: string | null;
+  onSquareClick: () => void;
+  isWinningSquare: boolean;
+}
+
+interface BoardProps {
+  xIsNext: boolean;
+  squares: (string | null)[];
+  onPlay: (nextSquares: (string | null)[]) => void;
+}
 
 interface CalculateWinnerResult {
   winner: string | null;
   line: number[] | null;
 }
 
-function Square({ value, onSquareClick, isWinningSquare }) {
+function Square({ value, onSquareClick, isWinningSquare }: SquareProps) {
   // valueを変数として使用する際は、{}(JSXからJavaScriptに戻す)が必要
   return (
     <button
@@ -18,9 +30,8 @@ function Square({ value, onSquareClick, isWinningSquare }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
-
-  function handleClick(i) {
+function Board({ xIsNext, squares, onPlay }: BoardProps) {
+  function handleClick(i: number) {
     const nextSquares = squares.slice();
     if (squares[i] || calculateWinner(squares).winner) {
       return;
@@ -72,17 +83,17 @@ function Game() {
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];  // 再レンダリング時に最新の履歴を取得する
 
-  function handlePlay(nextSquares) {
+  function handlePlay(nextSquares: (string | null)[]) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);  // setXxxは書き換えてる
     setCurrentMove(nextHistory.length - 1);
   }
 
-  function jumpTo(nextMove) {
+  function jumpTo(nextMove: number) {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {  // squares: 各要素, move: index
+  const moves = history.map((_, move) => {  // _: 各要素, move: index
     let description;
     if (currentMove === move) {
       description = "You are at move #" + move;
