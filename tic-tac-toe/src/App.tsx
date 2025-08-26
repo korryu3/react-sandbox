@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 
 import './App.css'
 
@@ -14,11 +14,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board() {
-  // 現在の手番を追跡するためのstate
-  const [xIsNext, setXIsNext] = useState(true);
-  // 盤面
-  const [squares, setSquares] = useState(Array(9).fill(null));
+function Board({ xIsNext, squares, onPlay }) {
 
   function handleClick(i) {
     const nextSquares = squares.slice();
@@ -30,8 +26,7 @@ function Board() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);  // 次の手番に切り替え
+    onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
@@ -66,6 +61,48 @@ function Board() {
   );
 }
 
+function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];  // 再レンダリング時に最新の履歴を取得する
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);  // setXxxは書き換えてる
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  }
+
+  const moves = history.map((squares, move) => {  // squares: 各要素, move: index
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+    return (
+      <li key={move}> {/* keyはReact独自の識別子. それぞれの要素に一意の値を持たせることで、不要なレンダリングを防ぐ */}
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -91,7 +128,7 @@ function calculateWinner(squares) {
 
 function App() {
   return (
-    <Board />
+    <Game />
   )
 }
 
