@@ -78,14 +78,20 @@ function Game() {
 
   const moves = history.map((squares, move) => {  // squares: 各要素, move: index
     let description;
-    if (move > 0) {
+    if (currentMove === move) {
+      description = "You are at move #" + move;
+    } else if (move > 0) {
       description = 'Go to move #' + move;
     } else {
       description = 'Go to game start';
     }
     return (
       <li key={move}> {/* keyはReact独自の識別子. それぞれの要素に一意の値を持たせることで、不要なレンダリングを防ぐ */}
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        {currentMove === move ? (
+          <strong>{description}</strong>
+        ) : (
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        )}
       </li>
     );
   });
