@@ -3,8 +3,10 @@ import { TOTAL_SQUARES } from '../constants';
 import { Board } from './Board';
 
 export function Game() {
-  const [history, setHistory] = useState([Array(TOTAL_SQUARES).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
+  const initialSquares = Array(TOTAL_SQUARES).fill(null);
+  const initialMove = 0;
+  const [history, setHistory] = useState([initialSquares]);
+  const [currentMove, setCurrentMove] = useState(initialMove);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -16,6 +18,11 @@ export function Game() {
 
   function jumpTo(nextMove: number) {
     setCurrentMove(nextMove);
+  }
+
+  function restartGame() {
+    setHistory([initialSquares]);
+    setCurrentMove(initialMove);
   }
 
   const moves = history.map((_, move) => {
@@ -39,13 +46,16 @@ export function Game() {
   });
 
   return (
-    <div className="game">
+    <>
+      <button onClick={restartGame}>Restart Game</button>
+      <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+          <ol>{moves}</ol>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
