@@ -1,12 +1,16 @@
 import { use, useState } from 'react';
-
 import './App.css'
 
-function Square({ value, onSquareClick }) {
+interface CalculateWinnerResult {
+  winner: string | null;
+  line: number[] | null;
+}
+
+function Square({ value, onSquareClick, isWinningSquare }) {
   // valueを変数として使用する際は、{}(JSXからJavaScriptに戻す)が必要
   return (
     <button
-      className="square"
+      className={`square ${isWinningSquare ? 'winning' : ''}`}
       onClick={onSquareClick}
     >
       {value}
@@ -18,7 +22,7 @@ function Board({ xIsNext, squares, onPlay }) {
 
   function handleClick(i) {
     const nextSquares = squares.slice();
-    if (squares[i] || calculateWinner(squares)) {
+    if (squares[i] || calculateWinner(squares).winner) {
       return;
     }
     if (xIsNext) {
@@ -29,7 +33,7 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
-  const winner = calculateWinner(squares);
+  const { winner, line } = calculateWinner(squares);
   let status;
   if (winner === 'Draw') {
     status = 'Game ended in a draw.';
@@ -46,11 +50,13 @@ function Board({ xIsNext, squares, onPlay }) {
         <div key={row} className="board-row">
           {[0, 1, 2].map(col => {
             const index = row * 3 + col;
+            const isWinningSquare = line ? line.includes(index) : false;
             return (
               <Square
                 key={index}
                 value={squares[index]}
                 onSquareClick={() => handleClick(index)}
+                isWinningSquare={isWinningSquare}
               />
             );
           })}
@@ -108,7 +114,7 @@ function Game() {
   );
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares: (string | null)[]): CalculateWinnerResult {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -122,13 +128,14 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      const winner_line = [a, b, c];
+      return { winner: squares[a], line: winner_line };
     }
   }
-  if (squares.every(square => square !== null)) {
-    return 'Draw'; // 引き分け
+  if (squares.every((square: string | null) => square !== null)) {
+    return { winner: 'Draw', line: null }; // 引き分け
   }
-  return null;
+  return { winner: null, line: null };
 }
 
 function App() {
