@@ -1,5 +1,5 @@
 export const BOARD_SIZE = 3;
-export const TOTAL_SQUARES = 9;
+export const TOTAL_SQUARES = BOARD_SIZE * BOARD_SIZE;
 
 export const WINNING_LINES = [
   [0, 1, 2],

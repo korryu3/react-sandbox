@@ -17,9 +17,9 @@ export function Board({ xIsNext, squares, onPlay }: BoardProps) {
     onPlay(nextSquares);
   }
 
-  const { winner, line } = calculateWinner(squares);
+  const { winner, line, isDraw } = calculateWinner(squares);
   let status;
-  if (winner === 'Draw') {
+  if (isDraw) {
     status = 'Game ended in a draw.';
   } else if (winner) {
     status = 'Winner: ' + winner;

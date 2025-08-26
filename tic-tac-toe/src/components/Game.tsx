@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { TOTAL_SQUARES } from '../constants';
+import type { SquareValue } from '../types';
 import { Board } from './Board';
 
 export function Game() {
-  const initialSquares = Array(TOTAL_SQUARES).fill(null);
-  const initialMove = 0;
-  const [history, setHistory] = useState([initialSquares]);
-  const [currentMove, setCurrentMove] = useState(initialMove);
+  const [history, setHistory] = useState([Array(TOTAL_SQUARES).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
-  function handlePlay(nextSquares: (string | null)[]) {
+  function handlePlay(nextSquares: SquareValue[]) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
@@ -21,8 +20,8 @@ export function Game() {
   }
 
   function restartGame() {
-    setHistory([initialSquares]);
-    setCurrentMove(initialMove);
+    setHistory([Array(TOTAL_SQUARES).fill(null)]);
+    setCurrentMove(0);
   }
 
   const moves = history.map((_, move) => {
