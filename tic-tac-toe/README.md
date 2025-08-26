@@ -1,4 +1,27 @@
-# React + TypeScript + Vite
+# 三目並べアプリ
+
+## Setup
+
+```bash
+cd tic-tac-toe
+```
+
+## Install dependencies
+
+voltaがない人はインストールしましょう
+https://docs.volta.sh/guide/getting-started
+
+```bash
+npm ci
+```
+
+## Run the development server
+
+```bash
+npm run dev
+```
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

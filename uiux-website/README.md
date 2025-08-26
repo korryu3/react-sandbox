@@ -1,4 +1,4 @@
-# React Sandbox
+# UI/UXの授業で作ったデザインを元にしたWebSite
 
 ## Setup
 
