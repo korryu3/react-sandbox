@@ -2,7 +2,7 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
-import { CounterApp } from 'components/CounterApp'
+// import { CounterApp } from 'components/CounterApp'
 import { FruitSaladCard } from 'components/FruitSaladCard'
 import '@/index.css'
 
